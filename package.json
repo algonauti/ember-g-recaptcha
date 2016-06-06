@@ -1,7 +1,7 @@
 {
   "name": "ember-g-recaptcha",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Easily integrate Google's reCaptcha in your app as an Ember Component",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -15,7 +15,7 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Davide Papagni",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
@@ -39,7 +39,10 @@
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "captcha",
+    "google",
+    "recaptcha"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6"
