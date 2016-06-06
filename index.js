@@ -2,5 +2,18 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-g-recaptcha'
+  name: 'ember-g-recaptcha',
+
+  isDevelopingAddon: function() {
+    return true;
+  },
+
+  contentFor: function(type, config) {
+    let content = '';
+    if (type === 'head') {
+      let src = 'https://www.google.com/recaptcha/api.js?render=explicit';
+      content = `<script type="text/javascript" src="${src}"></script>`;
+    }
+    return content;
+  }
 };
