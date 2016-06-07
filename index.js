@@ -4,10 +4,6 @@
 module.exports = {
   name: 'ember-g-recaptcha',
 
-  isDevelopingAddon: function() {
-    return true;
-  },
-
   contentFor: function(type, config) {
     let content = '';
     if (type === 'head') {
