@@ -3,7 +3,14 @@
 Easily integrate [Google's reCaptcha](https://developers.google.com/recaptcha/) in your app as an Ember Component.
 
 
-## Configuration
+## Install
+
+Run the following command from inside your ember-cli project:
+
+    ember install ember-g-recaptcha
+
+
+## Configure
 
 You need to generate a valid Site Key / Secret Key pair on [Google's reCaptcha admin console](https://www.google.com/recaptcha/admin).
 Then, you need to set your Site Key in the `ENV` var on your `config/environment.js` file, like this:
