@@ -55,8 +55,8 @@ You can pass `g-recaptcha` the following properties:
 * `size`
 * `tabIndex`
 
-Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param)
-Have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates)
+Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param).
+Also have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates).
 
 You know, after some time the reCaptcha response expires; `g-recaptcha` 's default behavior is to invoke the [reset method](https://developers.google.com/recaptcha/docs/display#js_api). But, if you want to perform custom behavior instead (e.g. transitioning to another route) you can pass your custom action via the `onExpired` property, like this:
 
