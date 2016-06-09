@@ -3,6 +3,8 @@ import Configuration from '../configuration';
 
 export default Ember.Component.extend({
 
+  classNames: ['g-recaptcha'],
+
   sitekey: Configuration.siteKey,
 
   tabindex: Ember.computed.alias('tabIndex'),
