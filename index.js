@@ -7,7 +7,7 @@ module.exports = {
   contentFor: function(type, config) {
     var content = '';
     if (type === 'head') {
-      let src = 'https://www.google.com/recaptcha/api.js?render=explicit';
+      var src = 'https://www.google.com/recaptcha/api.js?render=explicit';
       content = `<script type="text/javascript" src="${src}"></script>`;
     }
     return content;
