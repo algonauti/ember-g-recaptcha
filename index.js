@@ -8,7 +8,7 @@ module.exports = {
     var content = '';
     if (type === 'head') {
       var src = 'https://www.google.com/recaptcha/api.js?render=explicit';
-      content = `<script type="text/javascript" src="${src}"></script>`;
+      content = '<script type="text/javascript" src="'+src+'"></script>';
     }
     return content;
   }
