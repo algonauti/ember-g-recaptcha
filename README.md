@@ -28,7 +28,7 @@ Then, you need to set your Site Key in the `ENV` var on your `config/environment
 ```
 
 
-## Usage
+## Basic Usage
 
 Add the component to your template like this:
 
@@ -48,15 +48,10 @@ then in your component or controller 's actions:
   }
 ```
 
-You can pass `g-recaptcha` the following properties:
 
-* `theme`
-* `type`
-* `size`
-* `tabIndex`
+## Advanced Usage
 
-Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param).
-Also have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates).
+### Handling Expiration
 
 You know, after some time the reCaptcha response expires; `g-recaptcha` 's default behavior is to invoke the [reset method](https://developers.google.com/recaptcha/docs/display#js_api). But, if you want to perform custom behavior instead (e.g. transitioning to another route) you can pass your custom action via the `onExpired` property, like this:
 
@@ -74,6 +69,34 @@ then in your component or controller 's actions:
     },
   }
 ```
+
+### Triggering Reset
+
+You might want to arbitrarily trigger [reCaptcha reset](https://developers.google.com/recaptcha/docs/display#js_api). For example, if your form submission fails for errors on other fields, you might want to force user to solve a new reCaptcha challenge.
+To do that, first you'll need to grab a reference to `g-recaptcha` in your template, like this:
+
+```
+{{g-recaptcha onSuccess=(action "onCaptchaResolved")
+              ref=(mut gRecaptcha) }}
+```
+
+then you'll be able to invoke `resetReCaptcha()` method on `gRecaptcha` property anywhere in your component or controller 's code, like this:
+
+```js
+  this.get('gRecaptcha').resetReCaptcha();
+```
+
+### Customization
+
+You can pass `g-recaptcha` the following properties:
+
+* `theme`
+* `type`
+* `size`
+* `tabIndex`
+
+Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param).
+Also have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates).
 
 
 ## License
