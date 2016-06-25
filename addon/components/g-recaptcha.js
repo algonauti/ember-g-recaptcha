@@ -33,6 +33,12 @@ export default Ember.Component.extend({
     }
   },
 
+  resetReCaptcha() {
+    if (Ember.isPresent(this.get('widgetId'))) {
+      window.grecaptcha.reset(this.get('widgetId'));
+    }
+  },
+
   successCallback(reCaptchaResponse) {
     let action = this.get('onSuccess');
     if (Ember.isPresent(action)) {
@@ -45,9 +51,7 @@ export default Ember.Component.extend({
     if (Ember.isPresent(action)) {
       action();
     } else {
-      if (Ember.isPresent(this.set('widgetId'))) {
-        window.grecaptcha.reset(this.set('widgetId'));
-      }
+      this.resetReCaptcha();
     }
   },
 
