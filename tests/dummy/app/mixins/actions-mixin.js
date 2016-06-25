@@ -17,6 +17,9 @@ export default Ember.Mixin.create({
       }, () => {
         this.transitionToRoute('index');
       });
+    },
+    forceReset() {
+      this.get('gRecaptcha').resetReCaptcha();
     }
   }
 });
