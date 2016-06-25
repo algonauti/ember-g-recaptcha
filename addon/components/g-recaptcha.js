@@ -29,6 +29,7 @@ export default Ember.Component.extend({
       });
       let widgetId = window.grecaptcha.render(container, parameters);
       this.set('widgetId', widgetId);
+      this.set('ref', this);
     }
   },
 
