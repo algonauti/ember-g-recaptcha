@@ -6,9 +6,9 @@ module.exports = {
 
   contentFor: function(type, config) {
     var content = '';
-    if (type === 'head') {
+    if (type === 'body-footer') {
       var src = 'https://www.google.com/recaptcha/api.js?render=explicit';
-      content = '<script type="text/javascript" src="'+src+'"></script>';
+      content = '<script type="text/javascript" src="'+src+'" async></script>';
     }
     return content;
   }
