@@ -21,7 +21,8 @@ export default Ember.Component.extend({
         'theme',
         'type',
         'size',
-        'tabindex'
+        'tabindex',
+        'hl'
       );
       let parameters = Ember.merge(properties, {
         callback: this.get('successCallback').bind(this),
