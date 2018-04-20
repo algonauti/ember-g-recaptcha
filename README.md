@@ -20,6 +20,7 @@ Then, you need to set your Site Key in the `ENV` var on your `config/environment
     // ...
 
     gReCaptcha: {
+      jsUrl: 'https://www.google.com/recaptcha/api.js?render=explicit', // default
       siteKey: 'your-recaptcha-site-key'
     }
 
@@ -98,6 +99,28 @@ You can pass `g-recaptcha` the following properties:
 
 Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param).
 Also have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates).
+
+
+### Configuring source JavaScript URL
+
+In some countries, such as China, you may need to customize the source JavaScript URL. Since the google.com domain is blocked in China, you
+must set the `jsUrl` in the configuration to use the `recaptcha.net`. This works outside China as well.
+
+```js
+  var ENV = {
+    // ...
+
+    gReCaptcha: {
+      jsUrl: 'https://recaptcha.net/recaptcha/api.js?render=explicit', // overridden
+      siteKey: 'your-recaptcha-site-key'
+    }
+
+    // ...
+  }
+```
+
+This also requires the backend URL to be set to `https://recaptcha.net/recaptcha/api/siteverify`. For more information on configuring the `jsUrl`, see [this issue](https://github.com/google/recaptcha/issues/87#issuecomment-368252094).
+
 
 
 ## License
