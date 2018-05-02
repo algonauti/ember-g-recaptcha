@@ -1,3 +1,3 @@
-import Ember from 'ember';
+import Object from '@ember/object';
 
-export default Ember.Object.create();
+export default Object.create();

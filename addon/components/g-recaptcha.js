@@ -1,17 +1,23 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { alias } from '@ember/object/computed';
+import { isNone } from '@ember/utils';
+import { later } from '@ember/runloop';
+import { merge } from '@ember/polyfills';
+import { isPresent } from '@ember/utils';
+import { next } from '@ember/runloop';
 import Configuration from '../configuration';
 
-export default Ember.Component.extend({
+export default Component.extend({
 
   classNames: ['g-recaptcha'],
 
   sitekey: Configuration.siteKey,
 
-  tabindex: Ember.computed.alias('tabIndex'),
+  tabindex: alias('tabIndex'),
 
   renderReCaptcha() {
-    if (Ember.isNone(window.grecaptcha)) {
-      Ember.run.later(() => {
+    if (isNone(window.grecaptcha)) {
+      later(() => {
         this.renderReCaptcha();
       }, 500);
     } else {
@@ -24,7 +30,7 @@ export default Ember.Component.extend({
         'tabindex',
         'hl'
       );
-      let parameters = Ember.merge(properties, {
+      let parameters = merge(properties, {
         callback: this.get('successCallback').bind(this),
         'expired-callback': this.get('expiredCallback').bind(this)
       });
@@ -35,21 +41,21 @@ export default Ember.Component.extend({
   },
 
   resetReCaptcha() {
-    if (Ember.isPresent(this.get('widgetId'))) {
+    if (isPresent(this.get('widgetId'))) {
       window.grecaptcha.reset(this.get('widgetId'));
     }
   },
 
   successCallback(reCaptchaResponse) {
     let action = this.get('onSuccess');
-    if (Ember.isPresent(action)) {
+    if (isPresent(action)) {
       action(reCaptchaResponse);
     }
   },
 
   expiredCallback() {
     let action = this.get('onExpired');
-    if (Ember.isPresent(action)) {
+    if (isPresent(action)) {
       action();
     } else {
       this.resetReCaptcha();
@@ -61,7 +67,7 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    Ember.run.next(() => {
+    next(() => {
       this.renderReCaptcha();
     });
   }
