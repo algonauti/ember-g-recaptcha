@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import Controller from '@ember/controller';
 import ActionsMixin from '../mixins/actions-mixin';
 
-export default Ember.Controller.extend(ActionsMixin, {});
+export default Controller.extend(ActionsMixin, {});
