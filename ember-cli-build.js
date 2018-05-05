@@ -14,8 +14,8 @@ module.exports = function(defaults) {
   */
 
   // sweetAlert
-  app.import('bower_components/sweetalert/dist/sweetalert-dev.js');
-  app.import('bower_components/sweetalert/dist/sweetalert.css');
+  app.import('node_modules/sweetalert/dist/sweetalert-dev.js');
+  app.import('node_modules/sweetalert/dist/sweetalert.css');
 
   return app.toTree();
 };
