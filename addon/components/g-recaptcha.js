@@ -16,7 +16,7 @@ export default Component.extend({
   tabindex: alias('tabIndex'),
 
   renderReCaptcha() {
-    if (isNone(window.grecaptcha)) {
+    if (isNone(window.grecaptcha) || isNone(window.grecaptcha.render)) {
       later(() => {
         this.renderReCaptcha();
       }, 500);
