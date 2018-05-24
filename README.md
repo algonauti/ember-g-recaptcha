@@ -2,6 +2,8 @@
 
 Easily integrate [Google's reCaptcha](https://developers.google.com/recaptcha/) in your app as an Ember Component.
 
+**This addon only supports Ember 3 or above**
+
 
 ## Install
 
