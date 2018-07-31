@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('dark-theme');
   this.route('audio-type');
   this.route('compact-size');
+  this.route('invisible-mode');
 });
 
 export default Router;
