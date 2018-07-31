@@ -102,6 +102,30 @@ You can pass `g-recaptcha` the following properties:
 Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param).
 Also have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates).
 
+### Invisible reCaptcha
+
+In some cases you may want to use reCaptcha in the [invisible mode](https://developers.google.com/recaptcha/docs/invisible). Only thing you need do is add `size` key to `g-recaptcha` component with `invisible` value and create button with submit type, so you will get something like this:
+
+```
+{{g-recaptcha
+  onSuccess=(action "onCaptchaResolved")
+  size="invisible"
+}}
+
+<button {{action "submit"}} type="submit">Hello</button>
+```
+
+Then in your component you need to define `submit` method which will execute `reCaptcha`. For example:
+
+```js
+actions: {
+  submit() {
+    grecaptcha.execute(); // eslint-disable-line no-undef
+    // Process rest of operations
+  }
+}
+```
+
 
 ### Configuring source JavaScript URL
 
