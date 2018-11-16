@@ -19,7 +19,6 @@ export default Component.extend({
         this.renderReCaptcha();
       }, 500);
     } else {
-      let container = this.$()[0];
       let properties = this.getProperties(
         'sitekey',
         'theme',
@@ -32,7 +31,7 @@ export default Component.extend({
         callback: this.get('successCallback').bind(this),
         'expired-callback': this.get('expiredCallback').bind(this)
       });
-      let widgetId = window.grecaptcha.render(container, parameters);
+      let widgetId = window.grecaptcha.render(this.get('element'), parameters);
       this.set('widgetId', widgetId);
       this.set('ref', this);
     }
