@@ -70,8 +70,9 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    window.__ember_g_recaptcha_onload_callback = () => { this.renderReCaptcha();  }
-    this.appendScript(`${Configuration.jsUrl}?onload=__ember_g_recaptcha_onload_callback&render=explicit`)
+    window.__ember_g_recaptcha_onload_callback = () => { this.renderReCaptcha(); };
+    let baseUrl = Configuration.jsUrl || 'https://www.google.com/recaptcha/api.js?render=explicit';
+    this.appendScript(`${baseUrl}&onload=__ember_g_recaptcha_onload_callback`)
   }
 
 });
