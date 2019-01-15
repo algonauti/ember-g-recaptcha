@@ -89,6 +89,29 @@ then you'll be able to invoke `resetReCaptcha()` method on `gRecaptcha` property
   this.get('gRecaptcha').resetReCaptcha();
 ```
 
+### onRender Callback
+
+You might want to pass a callback function that will be called after the reCaptcha renders on the page. This is great for things like loading spinners. To do so, you can do something like this:
+
+```
+{{g-recaptcha onSuccess=(action "onCaptchaResolved")
+              onRender=(action "onCaptchaRendered") }}
+
+```
+
+then in your component or controller 's actions:
+
+```js
+  actions: {
+    onCaptchaResolved() {
+      // ...
+    },
+    onCaptchaRendered() {
+      // your custom onRender logic
+    }
+  }
+```
+
 ### Customization
 
 You can pass `g-recaptcha` the following properties:
