@@ -1,8 +1,7 @@
-/* jshint node: true */
 'use strict';
 
 module.exports = {
-  name: 'ember-g-recaptcha',
+  name: require('./package').name,
 
   contentFor: function(type, config) {
     var content = '';
