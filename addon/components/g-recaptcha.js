@@ -1,7 +1,6 @@
 import Component from '@ember/component';
 import { alias } from '@ember/object/computed';
-import { isNone, isPresent } from '@ember/utils';
-import { later, next } from '@ember/runloop';
+import { isPresent } from '@ember/utils';
 import { merge } from '@ember/polyfills';
 import Configuration from '../configuration';
 
@@ -14,32 +13,34 @@ export default Component.extend({
   tabindex: alias('tabIndex'),
 
   renderReCaptcha() {
-    if (isNone(window.grecaptcha) || isNone(window.grecaptcha.render)) {
-      later(() => {
-        this.renderReCaptcha();
-      }, 500);
-    } else {
-      let properties = this.getProperties(
-        'sitekey',
-        'theme',
-        'type',
-        'size',
-        'tabindex',
-        'hl'
-      );
-      let parameters = merge(properties, {
-        callback: this.get('successCallback').bind(this),
-        'expired-callback': this.get('expiredCallback').bind(this)
-      });
-      let widgetId = window.grecaptcha.render(this.get('element'), parameters);
-      this.set('widgetId', widgetId);
-      this.set('ref', this);
-    }
+    let properties = this.getProperties(
+      'sitekey',
+      'theme',
+      'type',
+      'size',
+      'tabindex',
+      'hl'
+    );
+    let parameters = merge(properties, {
+      callback: this.get('successCallback').bind(this),
+      'expired-callback': this.get('expiredCallback').bind(this),
+    });
+    let widgetId = window.grecaptcha.render(this.get('element'), parameters);
+    this.set('widgetId', widgetId);
+    this.set('ref', this);
+    this.renderCallback()
   },
 
   resetReCaptcha() {
     if (isPresent(this.get('widgetId'))) {
       window.grecaptcha.reset(this.get('widgetId'));
+    }
+  },
+
+  renderCallback() {
+    let action = this.get('onRender');
+    if (isPresent(action)) {
+      action();
     }
   },
 
@@ -59,14 +60,18 @@ export default Component.extend({
     }
   },
 
+  appendScript(src) {
+    let scriptTag = document.createElement('script');
+    scriptTag.src = src;
+    document.body.appendChild(scriptTag);
+  },
 
   // Lifecycle Hooks
 
   didInsertElement() {
     this._super(...arguments);
-    next(() => {
-      this.renderReCaptcha();
-    });
+    window.__ember_g_recaptcha_onload_callback = () => { this.renderReCaptcha();  }
+    this.appendScript(`${Configuration.jsUrl}?onload=__ember_g_recaptcha_onload_callback&render=explicit`)
   }
 
 });
