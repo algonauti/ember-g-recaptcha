@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import Mixin from '@ember/object/mixin';
 
 export default Mixin.create({
@@ -9,7 +8,7 @@ export default Mixin.create({
         'See reCaptcha response in the console logs',
         'success'
       );
-      Ember.Logger.info('reCaptcha response:\n'+reCaptchaResponse);
+      console.info('reCaptcha response:\n'+reCaptchaResponse);
     },
     onCaptchaExpired() {
       window.swal({
