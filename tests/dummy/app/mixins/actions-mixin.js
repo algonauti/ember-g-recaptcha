@@ -1,7 +1,13 @@
 import Mixin from '@ember/object/mixin';
 
 export default Mixin.create({
+
   actions: {
+
+    onCaptchaRendered() {
+      console.info('reCaptcha just rendered');
+    },
+
     onCaptchaResolved(reCaptchaResponse) {
       window.swal(
         'reCaptcha successfully resolved!',
@@ -10,6 +16,7 @@ export default Mixin.create({
       );
       console.info('reCaptcha response:\n'+reCaptchaResponse);
     },
+
     onCaptchaExpired() {
       window.swal({
         title: 'reCaptcha response expired!',
@@ -18,8 +25,10 @@ export default Mixin.create({
         this.transitionToRoute('index');
       });
     },
+
     forceReset() {
       this.get('gRecaptcha').resetReCaptcha();
     }
   }
+
 });
