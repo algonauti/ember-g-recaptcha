@@ -1,3 +1,7 @@
 <h2>Google Defaults</h2>
-{{g-recaptcha onSuccess=(action "onCaptchaResolved") ref=(mut gRecaptcha) }}
+{{g-recaptcha
+  onRender=(action "onCaptchaRendered")
+  onSuccess=(action "onCaptchaResolved")
+  ref=(mut gRecaptcha)
+}}
 <p><a href="" {{action "forceReset"}}>Force reset</a></p>
