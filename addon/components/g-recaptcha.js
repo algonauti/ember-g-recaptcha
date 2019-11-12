@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { alias } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
-import { merge } from '@ember/polyfills';
+import { assign } from '@ember/polyfills';
 import Configuration from '../configuration';
 
 export default Component.extend({
@@ -21,7 +21,7 @@ export default Component.extend({
       'tabindex',
       'hl'
     );
-    let parameters = merge(properties, {
+    let parameters = assign(properties, {
       callback: this.get('successCallback').bind(this),
       'expired-callback': this.get('expiredCallback').bind(this),
     });
