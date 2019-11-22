@@ -12,26 +12,24 @@ module.exports = function() {
       useYarn: true,
       scenarios: [
         {
-          name: 'ember-lts-2.16',
+          name: 'ember-lts-2.18',
           env: {
-            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true }),
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': false })
           },
           npm: {
             devDependencies: {
-              '@ember/jquery': '^0.5.1',
-              'ember-source': '~2.16.0'
+              'ember-source': '~2.18.0'
             }
           }
         },
         {
-          name: 'ember-lts-2.18',
+          name: 'ember-lts-3.4',
           env: {
-            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': true }),
+            EMBER_OPTIONAL_FEATURES: JSON.stringify({ 'jquery-integration': false })
           },
           npm: {
             devDependencies: {
-              '@ember/jquery': '^0.5.1',
-              'ember-source': '~2.18.0'
+              'ember-source': '~3.4.0'
             }
           }
         },
@@ -56,25 +54,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': urls[2]
-            }
-          }
-        },
-        {
-          name: 'ember-default',
-          npm: {
-            devDependencies: {}
-          }
-        },
-        {
-          name: 'ember-default-with-jquery',
-          env: {
-            EMBER_OPTIONAL_FEATURES: JSON.stringify({
-              'jquery-integration': true
-            })
-          },
-          npm: {
-            devDependencies: {
-              '@ember/jquery': '^0.5.1'
             }
           }
         }
