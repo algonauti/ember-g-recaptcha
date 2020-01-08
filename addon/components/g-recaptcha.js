@@ -19,7 +19,8 @@ export default Component.extend({
       'type',
       'size',
       'tabindex',
-      'hl'
+      'hl',
+      'badge'
     );
     let parameters = assign(properties, {
       callback: this.get('successCallback').bind(this),
