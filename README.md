@@ -121,6 +121,7 @@ You can pass `g-recaptcha` the following properties:
 * `size`
 * `tabIndex`
 * `hl`
+*  `badge`
 
 Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param).
 Also have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates).
