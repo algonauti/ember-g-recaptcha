@@ -7,18 +7,18 @@ module.exports = async function() {
     useYarn: true,
     scenarios: [
       {
-        name: 'ember-lts-3.4',
-        npm: {
-          devDependencies: {
-            'ember-source': '~3.4.0'
-          }
-        }
-      },
-      {
         name: 'ember-lts-3.8',
         npm: {
           devDependencies: {
             'ember-source': '~3.8.0'
+          }
+        }
+      },
+      {
+        name: 'ember-lts-3.12',
+        npm: {
+          devDependencies: {
+            'ember-source': '~3.12.0'
           }
         }
       },
@@ -46,7 +46,7 @@ module.exports = async function() {
           }
         }
       },
-      // The default `.travis.yml` runs this scenario via `npm test`,
+      // The default `.travis.yml` runs this scenario via `yarn test`,
       // not via `ember try`. It's still included here so that running
       // `ember try:each` manually or from a customized CI config will run it
       // along with all the other scenarios.
@@ -55,6 +55,22 @@ module.exports = async function() {
         npm: {
           devDependencies: {}
         }
-      }    ]
+      },
+      {
+        name: 'ember-classic',
+        env: {
+          EMBER_OPTIONAL_FEATURES: JSON.stringify({
+            'application-template-wrapper': true,
+            'default-async-observers': false,
+            'template-only-glimmer-components': false
+          })
+        },
+        npm: {
+          ember: {
+            edition: 'classic'
+          }
+        }
+      }
+    ]
   };
 };
