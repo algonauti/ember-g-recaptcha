@@ -71,9 +71,20 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    window.__ember_g_recaptcha_onload_callback = () => { this.renderReCaptcha(); };
+    let executed = false;
+    window.__ember_g_recaptcha_onload_callback = () => {
+      if (!executed) {
+        executed = true;
+        this.renderReCaptcha();
+      }
+    };
     let baseUrl = Configuration.jsUrl || 'https://www.google.com/recaptcha/api.js?render=explicit';
     this.appendScript(`${baseUrl}&onload=__ember_g_recaptcha_onload_callback`)
+  },
+
+  didDestroyElement() {
+    this._super(...arguments);
+    window.__ember_g_recaptcha_onload_callback = () => { };
   }
 
 });
