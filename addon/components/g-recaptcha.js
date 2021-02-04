@@ -1,11 +1,10 @@
 import Component from '@ember/component';
-import { alias } from '@ember/object/computed';
-import { isPresent } from '@ember/utils';
-import { assign } from '@ember/polyfills';
 import Configuration from '../configuration';
+import { alias } from '@ember/object/computed';
+import { assign } from '@ember/polyfills';
+import { isPresent } from '@ember/utils';
 
 export default Component.extend({
-
   classNames: ['g-recaptcha'],
 
   sitekey: Configuration.siteKey,
@@ -13,15 +12,7 @@ export default Component.extend({
   tabindex: alias('tabIndex'),
 
   renderReCaptcha() {
-    let properties = this.getProperties(
-      'sitekey',
-      'theme',
-      'type',
-      'size',
-      'tabindex',
-      'hl',
-      'badge'
-    );
+    let properties = this.getProperties('sitekey', 'theme', 'type', 'size', 'tabindex', 'hl', 'badge');
     let parameters = assign(properties, {
       callback: this.get('successCallback').bind(this),
       'expired-callback': this.get('expiredCallback').bind(this),
@@ -29,7 +20,7 @@ export default Component.extend({
     let widgetId = window.grecaptcha.render(this.get('element'), parameters);
     this.set('widgetId', widgetId);
     this.set('ref', this);
-    this.renderCallback()
+    this.renderCallback();
   },
 
   resetReCaptcha() {
@@ -64,6 +55,9 @@ export default Component.extend({
   appendScript(src) {
     let scriptTag = document.createElement('script');
     scriptTag.src = src;
+    scriptTag.async = true;
+    scriptTag.defer = true;
+    scriptTag.crossOrigin = 'anonymous';
     document.body.appendChild(scriptTag);
   },
 
@@ -71,9 +65,10 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    window.__ember_g_recaptcha_onload_callback = () => { this.renderReCaptcha(); };
+    window.__ember_g_recaptcha_onload_callback = () => {
+      this.renderReCaptcha();
+    };
     let baseUrl = Configuration.jsUrl || 'https://www.google.com/recaptcha/api.js?render=explicit';
-    this.appendScript(`${baseUrl}&onload=__ember_g_recaptcha_onload_callback`)
-  }
-
+    this.appendScript(`${baseUrl}&onload=__ember_g_recaptcha_onload_callback`);
+  },
 });
