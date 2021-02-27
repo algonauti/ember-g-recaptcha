@@ -3,6 +3,9 @@ import Mixin from '@ember/object/mixin';
 export default Mixin.create({
 
   actions: {
+    auth() {
+      window.grecaptcha.execute();
+    },
 
     onCaptchaRendered() {
       console.info('reCaptcha just rendered');

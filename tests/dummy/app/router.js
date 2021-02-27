@@ -12,4 +12,5 @@ Router.map(function() {
   this.route('audio-type');
   this.route('compact-size');
   this.route('invisible-mode');
+  this.route('skip');
 });
