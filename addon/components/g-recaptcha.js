@@ -30,7 +30,13 @@ export default Component.extend({
     if (this.skip) {
       window.grecaptcha = {
         execute: () => {
-          this.successCallback('value');
+          this.successCallback();
+        },
+        getResponse: () => {
+          return window.btoa(Date.now().toString());
+        },
+        reset: () => {
+          return true;
         }
       }
     } else {
