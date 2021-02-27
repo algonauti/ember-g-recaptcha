@@ -23,7 +23,7 @@ module.exports = function(environment) {
     },
 
     gReCaptcha: {
-      siteKey: 'your-recaptcha-site-key'
+      siteKey: '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI'
     }
   };
 
