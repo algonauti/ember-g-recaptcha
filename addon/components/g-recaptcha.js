@@ -26,8 +26,18 @@ export default Component.extend({
       callback: this.get('successCallback').bind(this),
       'expired-callback': this.get('expiredCallback').bind(this),
     });
-    let widgetId = window.grecaptcha.render(this.get('element'), parameters);
-    this.set('widgetId', widgetId);
+
+    if (this.skip) {
+      window.grecaptcha = {
+        execute: () => {
+          this.successCallback('value');
+        }
+      }
+    } else {
+      let widgetId = window.grecaptcha.render(this.get('element'), parameters);
+      this.set('widgetId', widgetId);
+    }
+
     this.set('ref', this);
     this.renderCallback()
   },
@@ -73,7 +83,11 @@ export default Component.extend({
     this._super(...arguments);
     window.__ember_g_recaptcha_onload_callback = () => { this.renderReCaptcha(); };
     let baseUrl = Configuration.jsUrl || 'https://www.google.com/recaptcha/api.js?render=explicit';
-    this.appendScript(`${baseUrl}&onload=__ember_g_recaptcha_onload_callback`)
-  }
 
+    if (!this.skip) {
+      this.appendScript(`${baseUrl}&onload=__ember_g_recaptcha_onload_callback`)
+    } else {
+      this.renderReCaptcha()
+    }
+  }
 });
