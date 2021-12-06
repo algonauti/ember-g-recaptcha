@@ -3,6 +3,7 @@ import { alias } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
 import { assign } from '@ember/polyfills';
 import Configuration from '../configuration';
+import getGrecaptcha from '../utils/get-grecaptcha';
 
 export default Component.extend({
 
@@ -26,7 +27,7 @@ export default Component.extend({
       callback: this.get('successCallback').bind(this),
       'expired-callback': this.get('expiredCallback').bind(this),
     });
-    let widgetId = window.grecaptcha.render(this.get('element'), parameters);
+    let widgetId = getGrecaptcha().render(this.get('element'), parameters);
     this.set('widgetId', widgetId);
     this.set('ref', this);
     this.renderCallback()
@@ -34,7 +35,7 @@ export default Component.extend({
 
   resetReCaptcha() {
     if (isPresent(this.get('widgetId'))) {
-      window.grecaptcha.reset(this.get('widgetId'));
+      getGrecaptcha().reset(this.get('widgetId'));
     }
   },
 

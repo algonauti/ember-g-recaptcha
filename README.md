@@ -144,9 +144,12 @@ In some cases you may want to use reCaptcha in the [invisible mode](https://deve
 Then in your component you need to define `submit` method which will execute `reCaptcha`. For example:
 
 ```js
+import getGrecaptcha from 'ember-g-recaptcha/utils/get-grecaptcha';
+
 actions: {
   submit() {
-    window.grecaptcha.execute();
+    // window.grecaptcha or window.grecaptcha.enterprise depending on the JavaScript URL
+    getGrecaptcha().execute();
     // Process rest of operations
   }
 }
