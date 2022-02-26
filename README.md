@@ -4,13 +4,15 @@ Easily integrate [Google's reCaptcha](https://developers.google.com/recaptcha/) 
 
 **This addon only supports Ember 3 or above**
 
-
 ## Install
 
 Run the following command from inside your ember-cli project:
 
-    ember install ember-g-recaptcha
+`ember install ember-g-recaptcha`
 
+- Ember.js v3.12 or above
+- Ember CLI v2.13 or above
+- Node.js v10 or above
 
 ## Configure
 
@@ -18,18 +20,17 @@ You need to generate a valid Site Key / Secret Key pair on [Google's reCaptcha a
 Then, you need to set your Site Key in the `ENV` var on your `config/environment.js` file, like this:
 
 ```js
-  var ENV = {
-    // ...
+var ENV = {
+  // ...
 
-    gReCaptcha: {
-      jsUrl: 'https://www.google.com/recaptcha/api.js?render=explicit', // default
-      siteKey: 'your-recaptcha-site-key'
-    }
+  gReCaptcha: {
+    jsUrl: "https://www.google.com/recaptcha/api.js?render=explicit", // default
+    siteKey: "your-recaptcha-site-key",
+  },
 
-    // ...
-  }
+  // ...
+};
 ```
-
 
 ## Basic Usage
 
@@ -50,7 +51,6 @@ then in your component or controller 's actions:
     },
   }
 ```
-
 
 ## Advanced Usage
 
@@ -86,7 +86,7 @@ To do that, first you'll need to grab a reference to `g-recaptcha` in your templ
 then you'll be able to invoke `resetReCaptcha()` method on `gRecaptcha` property anywhere in your component or controller 's code, like this:
 
 ```js
-  this.get('gRecaptcha').resetReCaptcha();
+this.get("gRecaptcha").resetReCaptcha();
 ```
 
 ### onRender Callback
@@ -116,12 +116,12 @@ then in your component or controller 's actions:
 
 You can pass `g-recaptcha` the following properties:
 
-* `theme`
-* `type`
-* `size`
-* `tabIndex`
-* `hl`
-*  `badge`
+- `theme`
+- `type`
+- `size`
+- `tabIndex`
+- `hl`
+- `badge`
 
 Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param).
 Also have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates).
@@ -158,21 +158,19 @@ In some countries, such as China, you may need to customize the source JavaScrip
 must set the `jsUrl` in the configuration to use the `recaptcha.net`. This works outside China as well.
 
 ```js
-  var ENV = {
-    // ...
+var ENV = {
+  // ...
 
-    gReCaptcha: {
-      jsUrl: 'https://recaptcha.net/recaptcha/api.js?render=explicit', // overridden
-      siteKey: 'your-recaptcha-site-key'
-    }
+  gReCaptcha: {
+    jsUrl: "https://recaptcha.net/recaptcha/api.js?render=explicit", // overridden
+    siteKey: "your-recaptcha-site-key",
+  },
 
-    // ...
-  }
+  // ...
+};
 ```
 
 This also requires the backend URL to be set to `https://recaptcha.net/recaptcha/api/siteverify`. For more information on configuring the `jsUrl`, see [this issue](https://github.com/google/recaptcha/issues/87#issuecomment-368252094).
-
-
 
 ## License
 
