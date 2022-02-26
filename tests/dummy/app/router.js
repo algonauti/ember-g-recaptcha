@@ -9,7 +9,6 @@ export default class Router extends EmberRouter {
 Router.map(function () {
   this.route('google-defaults');
   this.route('dark-theme');
-  this.route('audio-type');
   this.route('compact-size');
   this.route('invisible-mode');
 });

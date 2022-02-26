@@ -21,10 +21,10 @@ module.exports = function (environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
     },
+  };
 
-    gReCaptcha: {
-      siteKey: 'your-recaptcha-site-key',
-    },
+  ENV['ember-g-recaptcha'] = {
+    sitekey: 'your-recaptcha-site-key',
   };
 
   if (environment === 'development') {
