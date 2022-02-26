@@ -14,9 +14,12 @@ module.exports = function (defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
-  // sweetAlert
-  app.import('node_modules/sweetalert/dist/sweetalert-dev.js');
-  app.import('node_modules/sweetalert/dist/sweetalert.css');
-
-  return app.toTree();
+  const { maybeEmbroider } = require('@embroider/test-setup');
+  return maybeEmbroider(app, {
+    skipBabel: [
+      {
+        package: 'qunit',
+      },
+    ],
+  });
 };
