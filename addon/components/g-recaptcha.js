@@ -5,7 +5,6 @@ import { assign } from '@ember/polyfills';
 import Configuration from '../configuration';
 
 export default Component.extend({
-
   classNames: ['g-recaptcha'],
 
   sitekey: Configuration.siteKey,
@@ -23,37 +22,37 @@ export default Component.extend({
       'badge'
     );
     let parameters = assign(properties, {
-      callback: this.get('successCallback').bind(this),
-      'expired-callback': this.get('expiredCallback').bind(this),
+      callback: this.successCallback.bind(this),
+      'expired-callback': this.expiredCallback.bind(this),
     });
-    let widgetId = window.grecaptcha.render(this.get('element'), parameters);
+    let widgetId = window.grecaptcha.render(this.element, parameters);
     this.set('widgetId', widgetId);
     this.set('ref', this);
-    this.renderCallback()
+    this.renderCallback();
   },
 
   resetReCaptcha() {
-    if (isPresent(this.get('widgetId'))) {
-      window.grecaptcha.reset(this.get('widgetId'));
+    if (isPresent(this.widgetId)) {
+      window.grecaptcha.reset(this.widgetId);
     }
   },
 
   renderCallback() {
-    let action = this.get('onRender');
+    let action = this.onRender;
     if (isPresent(action)) {
       action();
     }
   },
 
   successCallback(reCaptchaResponse) {
-    let action = this.get('onSuccess');
+    let action = this.onSuccess;
     if (isPresent(action)) {
       action(reCaptchaResponse);
     }
   },
 
   expiredCallback() {
-    let action = this.get('onExpired');
+    let action = this.onExpired;
     if (isPresent(action)) {
       action();
     } else {
@@ -71,9 +70,12 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    window.__ember_g_recaptcha_onload_callback = () => { this.renderReCaptcha(); };
-    let baseUrl = Configuration.jsUrl || 'https://www.google.com/recaptcha/api.js?render=explicit';
-    this.appendScript(`${baseUrl}&onload=__ember_g_recaptcha_onload_callback`)
-  }
-
+    window.__ember_g_recaptcha_onload_callback = () => {
+      this.renderReCaptcha();
+    };
+    let baseUrl =
+      Configuration.jsUrl ||
+      'https://www.google.com/recaptcha/api.js?render=explicit';
+    this.appendScript(`${baseUrl}&onload=__ember_g_recaptcha_onload_callback`);
+  },
 });

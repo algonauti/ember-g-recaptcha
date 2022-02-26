@@ -23,8 +23,8 @@ module.exports = function (environment) {
     },
 
     gReCaptcha: {
-      siteKey: 'your-recaptcha-site-key'
-    }
+      siteKey: 'your-recaptcha-site-key',
+    },
   };
 
   if (environment === 'development') {
