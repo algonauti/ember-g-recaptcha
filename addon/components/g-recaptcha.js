@@ -1,81 +1,117 @@
-import Component from '@ember/component';
-import { alias } from '@ember/object/computed';
+/* globals grecaptcha */
+
+import { action, get } from '@ember/object';
+import { cached } from '@glimmer/tracking';
+import { getOwner } from '@ember/application';
 import { isPresent } from '@ember/utils';
-import { assign } from '@ember/polyfills';
-import Configuration from '../configuration';
+import Component from '@glimmer/component';
 
-export default Component.extend({
-  classNames: ['g-recaptcha'],
+export default class GRecaptchaComponent extends Component {
+  @cached
+  get config() {
+    const _config =
+      getOwner(this).resolveRegistration('config:environment') || {};
 
-  sitekey: Configuration.siteKey,
+    return _config['ember-g-recaptcha'] || {};
+  }
 
-  tabindex: alias('tabIndex'),
-
-  renderReCaptcha() {
-    let properties = this.getProperties(
+  @cached
+  get componentOptions() {
+    const defaults = [
       'sitekey',
       'theme',
-      'type',
       'size',
       'tabindex',
-      'hl',
-      'badge'
-    );
-    let parameters = assign(properties, {
-      callback: this.successCallback.bind(this),
-      'expired-callback': this.expiredCallback.bind(this),
+      'badge',
+      'isolated',
+    ];
+
+    const options = {};
+
+    defaults.forEach((option) => {
+      if (isPresent(get(this.args, option))) {
+        options[option] = get(this.args, option);
+      }
     });
-    let widgetId = window.grecaptcha.render(this.element, parameters);
-    this.set('widgetId', widgetId);
-    this.set('ref', this);
-    this.renderCallback();
-  },
 
-  resetReCaptcha() {
+    return options;
+  }
+
+  @cached
+  get options() {
+    return Object.assign({}, this.config, this.componentOptions);
+  }
+
+  reset() {
     if (isPresent(this.widgetId)) {
-      window.grecaptcha.reset(this.widgetId);
+      grecaptcha.reset(this.widgetId);
     }
-  },
+  }
 
-  renderCallback() {
-    let action = this.onRender;
-    if (isPresent(action)) {
-      action();
-    }
-  },
+  @action
+  _initialize(element) {
+    window.__ember_g_recaptcha_onload = () => {
+      this._render(element);
+    };
 
-  successCallback(reCaptchaResponse) {
-    let action = this.onSuccess;
-    if (isPresent(action)) {
-      action(reCaptchaResponse);
-    }
-  },
+    this._appendScript(
+      [
+        `${
+          this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'
+        }?render=explicit`,
+        'onload=__ember_g_recaptcha_onload',
+        this.config['hl'] ? `hl=${this.config['hl']}` : '',
+      ].join('&')
+    );
+  }
 
-  expiredCallback() {
-    let action = this.onExpired;
-    if (isPresent(action)) {
-      action();
-    } else {
-      this.resetReCaptcha();
-    }
-  },
+  @action
+  _destroy() {
+    window.__ember_g_recaptcha_onload = () => {};
+  }
 
-  appendScript(src) {
+  _appendScript(src) {
     let scriptTag = document.createElement('script');
     scriptTag.src = src;
+    scriptTag.async = true;
+    scriptTag.defer = true;
+
     document.body.appendChild(scriptTag);
-  },
+  }
 
-  // Lifecycle Hooks
+  _render(element) {
+    const parameters = Object.assign(this.options, {
+      callback: this._onSuccessCallback.bind(this),
+      'expired-callback': this._onExpiredCallback.bind(this),
+      'error-callback': this._onErrorCallback.bind(this),
+    });
 
-  didInsertElement() {
-    this._super(...arguments);
-    window.__ember_g_recaptcha_onload_callback = () => {
-      this.renderReCaptcha();
-    };
-    let baseUrl =
-      Configuration.jsUrl ||
-      'https://www.google.com/recaptcha/api.js?render=explicit';
-    this.appendScript(`${baseUrl}&onload=__ember_g_recaptcha_onload_callback`);
-  },
-});
+    this.widgetId = grecaptcha.render(element, parameters);
+
+    this._onRenderCallback();
+  }
+
+  _onRenderCallback() {
+    this._invokeCallback('onRender', this);
+  }
+
+  _onSuccessCallback(response) {
+    this._invokeCallback('onSuccess', response);
+  }
+
+  _onExpiredCallback() {
+    this._invokeCallback('onExpired');
+  }
+
+  _onErrorCallback(error) {
+    this._invokeCallback('onError', error);
+  }
+
+  _invokeCallback(callback, value) {
+    const _callback = this.args[callback];
+
+    if (isPresent(_callback) && typeof _callback === 'function') {
+      _callback(value);
+    }
+  }
+}
