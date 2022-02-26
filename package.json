@@ -1,6 +1,6 @@
 {
   "name": "ember-g-recaptcha",
-  "version": "1.3.0",
+  "version": "2.0.0",
   "description": "Easily integrate Google's reCaptcha in your app as an Ember Component",
   "keywords": [
     "ember-addon",
