@@ -2,15 +2,15 @@
 
 Easily integrate [Google's reCaptcha](https://developers.google.com/recaptcha/) in your app as an Ember Component.
 
-**This addon only supports Ember 3 or above**
-
-
 ## Install
 
 Run the following command from inside your ember-cli project:
 
-    ember install ember-g-recaptcha
+`ember install ember-g-recaptcha`
 
+- Ember.js v3.24 or above
+- Ember CLI v3.24 or above
+- Node.js v12 or above
 
 ## Configure
 
@@ -18,39 +18,35 @@ You need to generate a valid Site Key / Secret Key pair on [Google's reCaptcha a
 Then, you need to set your Site Key in the `ENV` var on your `config/environment.js` file, like this:
 
 ```js
-  var ENV = {
-    // ...
+var ENV = {
+  // ...
+};
 
-    gReCaptcha: {
-      jsUrl: 'https://www.google.com/recaptcha/api.js?render=explicit', // default
-      siteKey: 'your-recaptcha-site-key'
-    }
-
-    // ...
-  }
+ENV['ember-g-recaptcha'] = {
+  jsUrl: 'https://www.google.com/recaptcha/api.js?render=explicit', // default
+  sitekey: 'your-recaptcha-site-key',
+  hl: 'tr', // Ex: Turkish
+};
 ```
-
 
 ## Basic Usage
 
 Add the component to your template like this:
 
-```
-{{g-recaptcha onSuccess=(action "onCaptchaResolved")}}
+```handlebars
+<GRecaptcha @onSuccess={{this.onCaptchaResolved}} />
 ```
 
 then in your component or controller 's actions:
 
 ```js
-  actions: {
-    onCaptchaResolved(reCaptchaResponse) {
-      this.get('model').set('reCaptchaResponse', reCaptchaResponse);
-      // You should then save your model and the server would validate reCaptchaResponse
-      // ...
-    },
+  @action
+  onCaptchaResolved(reCaptchaResponse) {
+    this.model.set('reCaptchaResponse', reCaptchaResponse);
+    // You should then save your model and the server would validate reCaptchaResponse
+    // ...
   }
 ```
-
 
 ## Advanced Usage
 
@@ -58,18 +54,19 @@ then in your component or controller 's actions:
 
 You know, after some time the reCaptcha response expires; `g-recaptcha` 's default behavior is to invoke the [reset method](https://developers.google.com/recaptcha/docs/display#js_api). But, if you want to perform custom behavior instead (e.g. transitioning to another route) you can pass your custom action via the `onExpired` property, like this:
 
-```
-{{g-recaptcha onSuccess=(action "onCaptchaResolved")
-              onExpired=(action "onCaptchaExpired") }}
+```handlebars
+<GRecaptcha
+  @onSuccess={{this.onCaptchaResolved}}
+  @onExpired={{this.onCaptchaExpired}}
+/>
 ```
 
 then in your component or controller 's actions:
 
 ```js
-  actions: {
-    onCaptchaExpired() {
-      // your custom logic here
-    },
+  @action
+  onCaptchaExpired() {
+    // your custom logic here
   }
 ```
 
@@ -78,37 +75,41 @@ then in your component or controller 's actions:
 You might want to arbitrarily trigger [reCaptcha reset](https://developers.google.com/recaptcha/docs/display#js_api). For example, if your form submission fails for errors on other fields, you might want to force user to solve a new reCaptcha challenge.
 To do that, first you'll need to grab a reference to `g-recaptcha` in your template, like this:
 
-```
-{{g-recaptcha onSuccess=(action "onCaptchaResolved")
-              ref=(mut gRecaptcha) }}
+```handlebars
+<GRecaptcha
+  @onRender={{fn (mut this.gRecaptcha)}}
+  @onSuccess={{this.onCaptchaResolved}}
+/>
 ```
 
-then you'll be able to invoke `resetReCaptcha()` method on `gRecaptcha` property anywhere in your component or controller 's code, like this:
+then you'll be able to invoke `reset()` method on `gRecaptcha` property anywhere in your component or controller 's code, like this:
 
 ```js
-  this.get('gRecaptcha').resetReCaptcha();
+this.gRecaptcha.reset();
 ```
 
 ### onRender Callback
 
 You might want to pass a callback function that will be called after the reCaptcha renders on the page. This is great for things like loading spinners. To do so, you can do something like this:
 
-```
-{{g-recaptcha onSuccess=(action "onCaptchaResolved")
-              onRender=(action "onCaptchaRendered") }}
-
+```handlebars
+<GRecaptcha
+  @onRender={{this.onCaptchaRendered}}
+  @onSuccess={{this.onCaptchaResolved}}
+/>
 ```
 
 then in your component or controller 's actions:
 
 ```js
-  actions: {
-    onCaptchaResolved() {
-      // ...
-    },
-    onCaptchaRendered() {
-      // your custom onRender logic
-    }
+  @action
+  onCaptchaRendered() {
+    // your custom onRender logic
+  }
+
+  @action
+  onCaptchaResolved() {
+    // ...
   }
 ```
 
@@ -116,12 +117,12 @@ then in your component or controller 's actions:
 
 You can pass `g-recaptcha` the following properties:
 
-* `theme`
-* `type`
-* `size`
-* `tabIndex`
-* `hl`
-*  `badge`
+- `sitekey`
+- `theme`
+- `size`
+- `tabindex`
+- `badge`
+- `isolated`
 
 Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param).
 Also have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates).
@@ -132,23 +133,19 @@ Also have a look at the dummy app's [example templates](https://github.com/algon
 
 In some cases you may want to use reCaptcha in the [invisible mode](https://developers.google.com/recaptcha/docs/invisible). The only thing you need do is to add `size` key to `g-recaptcha` component with `invisible` value and create a button with submit type, so you will get something like this:
 
-```
-{{g-recaptcha
-  onSuccess=(action "onCaptchaResolved")
-  size="invisible"
-}}
+```handlebars
+<GRecaptcha @onSuccess={{this.onCaptchaResolved}} @size='invisible' />
 
-<button {{action "submit"}} type="submit">Hello</button>
+<button {{on 'click' this.submit}} type='button'>Hello</button>
 ```
 
 Then in your component you need to define `submit` method which will execute `reCaptcha`. For example:
 
 ```js
-actions: {
-  submit() {
-    window.grecaptcha.execute();
-    // Process rest of operations
-  }
+@action
+async submit() {
+  await window.grecaptcha.execute();
+  // Process rest of operations
 }
 ```
 
@@ -158,21 +155,17 @@ In some countries, such as China, you may need to customize the source JavaScrip
 must set the `jsUrl` in the configuration to use the `recaptcha.net`. This works outside China as well.
 
 ```js
-  var ENV = {
-    // ...
+var ENV = {
+  // ...
+};
 
-    gReCaptcha: {
-      jsUrl: 'https://recaptcha.net/recaptcha/api.js?render=explicit', // overridden
-      siteKey: 'your-recaptcha-site-key'
-    }
-
-    // ...
-  }
+ENV['ember-g-recaptcha'] = {
+  jsUrl: 'https://www.google.com/recaptcha/api.js?render=explicit', // default
+  sitekey: 'your-recaptcha-site-key',
+};
 ```
 
 This also requires the backend URL to be set to `https://recaptcha.net/recaptcha/api/siteverify`. For more information on configuring the `jsUrl`, see [this issue](https://github.com/google/recaptcha/issues/87#issuecomment-368252094).
-
-
 
 ## License
 

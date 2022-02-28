@@ -1,10 +1,9 @@
+import { action } from '@ember/object';
 import Controller from '@ember/controller';
-import ActionsMixin from '../mixins/actions-mixin';
 
-export default Controller.extend(ActionsMixin, {
-  actions: {
-    submit() {
-      window.grecaptcha.execute();
-    },
+export default class GoogleDefaultsController extends Controller {
+  @action
+  async submit() {
+    await window.grecaptcha.execute();
   }
-});
+}

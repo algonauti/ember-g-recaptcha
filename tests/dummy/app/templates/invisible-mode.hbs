@@ -1,4 +1,4 @@
 <h2>Invisible mode</h2>
-{{g-recaptcha onSuccess=(action "onCaptchaResolved") size="invisible"}}
+<GRecaptcha @onSuccess={{this.onCaptchaResolved}} @size='invisible' />
 
-<button {{action "submit"}} type="submit">Hello</button>
+<button {{on 'click' this.submit}} type='submit'>Hello</button>

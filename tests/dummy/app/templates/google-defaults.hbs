@@ -1,7 +1,11 @@
 <h2>Google Defaults</h2>
-{{g-recaptcha
-  onRender=(action "onCaptchaRendered")
-  onSuccess=(action "onCaptchaResolved")
-  ref=(mut gRecaptcha)
-}}
-<p><a href="" {{action "forceReset"}}>Force reset</a></p>
+<GRecaptcha
+  @onRender={{this.onCaptchaRendered}}
+  @onSuccess={{this.onCaptchaResolved}}
+/>
+<br />
+<button type='button' {{on 'click' this.forceReset}}>Force reset</button>
+<br />
+<LinkTo @route='index'>
+  Back
+</LinkTo>
