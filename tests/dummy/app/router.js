@@ -11,4 +11,5 @@ Router.map(function () {
   this.route('dark-theme');
   this.route('compact-size');
   this.route('invisible-mode');
+  this.route('multiple');
 });
