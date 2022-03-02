@@ -4,9 +4,12 @@ import { action, get } from '@ember/object';
 import { cached } from '@glimmer/tracking';
 import { getOwner } from '@ember/application';
 import { isPresent } from '@ember/utils';
+import { guidFor } from '@ember/object/internals';
 import Component from '@glimmer/component';
 
 export default class GRecaptchaComponent extends Component {
+  elementId = guidFor(this);
+
   @cached
   get config() {
     const _config =
@@ -50,7 +53,7 @@ export default class GRecaptchaComponent extends Component {
 
   @action
   _initialize(element) {
-    window.__ember_g_recaptcha_onload = () => {
+    window[`__ember_g_recaptcha_${this.elementId}_onload`] = () => {
       this._render(element);
     };
 
@@ -59,7 +62,7 @@ export default class GRecaptchaComponent extends Component {
         `${
           this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'
         }?render=explicit`,
-        'onload=__ember_g_recaptcha_onload',
+        `onload=__ember_g_recaptcha_${this.elementId}_onload`,
         this.config['hl'] ? `hl=${this.config['hl']}` : '',
       ].join('&')
     );
@@ -67,7 +70,7 @@ export default class GRecaptchaComponent extends Component {
 
   @action
   _destroy() {
-    window.__ember_g_recaptcha_onload = () => {};
+    window[`__ember_g_recaptcha_${this.elementId}_onload`] = () => {};
   }
 
   _appendScript(src) {
