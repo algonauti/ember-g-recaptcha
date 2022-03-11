@@ -1,0 +1,11 @@
+<h2>With skip option</h2>
+
+<GRecaptcha
+  @onSuccess={{this.onCaptchaRendered}}
+  @sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+  @size='invisible'
+  @skip={{true}}
+/>
+
+<button {{on 'click' this.auth}} type='submit'>authenticate</button>
+<p><a href="" {{on 'click' this.forceReset}}>Force reset</a></p>
