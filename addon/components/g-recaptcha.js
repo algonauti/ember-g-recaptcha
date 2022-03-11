@@ -27,7 +27,7 @@ export default class GRecaptchaComponent extends Component {
       'tabindex',
       'badge',
       'isolated',
-      'skip'
+      'skip',
     ];
 
     const options = {};
@@ -59,22 +59,25 @@ export default class GRecaptchaComponent extends Component {
     };
 
     const baseUrl = [
-      `${this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'
+      `${
+        this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'
       }?render=explicit`,
       `onload=__ember_g_recaptcha_${this.elementId}_onload`,
       this.config['hl'] ? `hl=${this.config['hl']}` : '',
     ].join('&');
 
     if (!this.options['skip']) {
-      this._appendScript(`${baseUrl}&onload=__ember_g_recaptcha_${this.elementId}_onload`)
+      this._appendScript(
+        `${baseUrl}&onload=__ember_g_recaptcha_${this.elementId}_onload`
+      );
     } else {
-      this._render()
+      this._render();
     }
   }
 
   @action
   _destroy() {
-    window[`__ember_g_recaptcha_${this.elementId}_onload`] = () => { };
+    window[`__ember_g_recaptcha_${this.elementId}_onload`] = () => {};
   }
 
   _appendScript(src) {
@@ -103,8 +106,8 @@ export default class GRecaptchaComponent extends Component {
         },
         reset: () => {
           return true;
-        }
-      }
+        },
+      };
     } else {
       this.widgetId = window.grecaptcha.render(element, parameters);
     }

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { click, find, render, waitFor, waitUntil } from '@ember/test-helpers';
+import { click, render, waitFor, waitUntil } from '@ember/test-helpers';
 import { spy } from 'sinon';
 
 import hbs from 'htmlbars-inline-precompile';
@@ -14,7 +14,10 @@ module('GRecaptchaComponent', function (hooks) {
   hooks.beforeEach(function () {
     this.set('siteKey', devRecaptchaKey);
     this.set('successHandler', spy());
-    this.set('captchaCaller', spy(() => window.grecaptcha.execute()));
+    this.set(
+      'captchaCaller',
+      spy(() => window.grecaptcha.execute())
+    );
   });
 
   test('loads real version of recaptcha service', async function (assert) {
@@ -25,7 +28,7 @@ module('GRecaptchaComponent', function (hooks) {
       />
     `);
 
-    await waitFor(".g-recaptcha > div", { timeout: 2000 });
+    await waitFor('.g-recaptcha > div', { timeout: 2000 });
 
     assert.dom('.g-recaptcha > div').exists();
   });
@@ -43,15 +46,24 @@ module('GRecaptchaComponent', function (hooks) {
       </div>
     `);
 
-    await waitFor(".g-recaptcha > div", { timeout: 2000 });
+    await waitFor('.g-recaptcha > div', { timeout: 2000 });
     await click('button');
 
-    await waitUntil(() => {
-      return this.successHandler.called;
-    }, { timeout: 2000 });
+    await waitUntil(
+      () => {
+        return this.successHandler.called;
+      },
+      { timeout: 2000 }
+    );
 
-    assert.ok(this.captchaCaller.called, 'captchaCaller was called with success');
-    assert.ok(this.successHandler.called, 'successHandler was called with success');
+    assert.ok(
+      this.captchaCaller.called,
+      'captchaCaller was called with success'
+    );
+    assert.ok(
+      this.successHandler.called,
+      'successHandler was called with success'
+    );
   });
 
   module('with @skip argument', function () {
@@ -59,7 +71,8 @@ module('GRecaptchaComponent', function (hooks) {
       await render(hbs`<GRecaptcha @skip={{true}} />`);
 
       assert.strictEqual(
-        this.element.querySelector('.g-recaptcha').childNodes.length, 0
+        this.element.querySelector('.g-recaptcha').childNodes.length,
+        0
       );
     });
 
@@ -80,8 +93,14 @@ module('GRecaptchaComponent', function (hooks) {
 
       await click('button');
 
-      assert.ok(this.captchaCaller.called, 'captchaCaller was called with success');
-      assert.ok(this.successHandler.called, 'successHandler was called with success');
+      assert.ok(
+        this.captchaCaller.called,
+        'captchaCaller was called with success'
+      );
+      assert.ok(
+        this.successHandler.called,
+        'successHandler was called with success'
+      );
     });
   });
 });
