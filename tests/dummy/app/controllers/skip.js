@@ -9,7 +9,7 @@ export default class SkipController extends Controller {
 
   @action
   forceReset() {
-    this.gRecaptcha.resetReCaptcha();
+    this.gRecaptcha.reset();
   }
 
   @action
