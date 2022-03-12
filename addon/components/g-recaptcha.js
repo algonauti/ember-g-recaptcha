@@ -27,6 +27,7 @@ export default class GRecaptchaComponent extends Component {
       'tabindex',
       'badge',
       'isolated',
+      'skip',
     ];
 
     const options = {};
@@ -57,15 +58,21 @@ export default class GRecaptchaComponent extends Component {
       this._render(element);
     };
 
-    this._appendScript(
-      [
-        `${
-          this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'
-        }?render=explicit`,
-        `onload=__ember_g_recaptcha_${this.elementId}_onload`,
-        this.config['hl'] ? `hl=${this.config['hl']}` : '',
-      ].join('&')
-    );
+    const baseUrl = [
+      `${
+        this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'
+      }?render=explicit`,
+      `onload=__ember_g_recaptcha_${this.elementId}_onload`,
+      this.config['hl'] ? `hl=${this.config['hl']}` : '',
+    ].join('&');
+
+    if (!this.options['skip']) {
+      this._appendScript(
+        `${baseUrl}&onload=__ember_g_recaptcha_${this.elementId}_onload`
+      );
+    } else {
+      this._render();
+    }
   }
 
   @action
@@ -89,7 +96,21 @@ export default class GRecaptchaComponent extends Component {
       'error-callback': this._onErrorCallback.bind(this),
     });
 
-    this.widgetId = grecaptcha.render(element, parameters);
+    if (this.options['skip']) {
+      window.grecaptcha = {
+        execute: () => {
+          this._onSuccessCallback();
+        },
+        getResponse: () => {
+          return window.btoa(Date.now().toString());
+        },
+        reset: () => {
+          return true;
+        },
+      };
+    } else {
+      this.widgetId = window.grecaptcha.render(element, parameters);
+    }
 
     this._onRenderCallback();
   }

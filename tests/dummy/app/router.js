@@ -12,4 +12,5 @@ Router.map(function () {
   this.route('compact-size');
   this.route('invisible-mode');
   this.route('multiple');
+  this.route('skip');
 });
