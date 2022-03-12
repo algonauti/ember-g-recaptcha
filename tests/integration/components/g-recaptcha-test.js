@@ -78,13 +78,12 @@ module('GRecaptchaComponent', function (hooks) {
 
     test('invokes callbacks normally', async function (assert) {
       // since the callbacks are controlled by the Google code, the only way to force them is using
-      // the grecaptcha.execute() function + size=invisible option.
+      // the grecaptcha.execute() function option.
       await render(hbs`
         <div>
           <GRecaptcha
             @skip={{true}}
             @onSuccess={{this.successHandler}}
-            @size="invisible"
           />
 
           <button {{on 'click' this.captchaCaller}}>Caller</button>
