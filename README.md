@@ -113,6 +113,21 @@ then in your component or controller 's actions:
   }
 ```
 
+### Skipping real library download
+
+Sometimes you want to have the behavior of a reCAPTCHA but without the burden of injecting the downloaded library into your web page. This is particularly useful during tests.
+
+```handlebars
+<GRecaptcha
+  @skip={{true}}
+  @onSuccess={{this.onCaptchaResolved}}
+/>
+```
+
+Using `@skip`, you have the power to ignore the reCAPTCHA's real validations but still have the ability to call your success callback.
+
+:warning: This does not work with `onError` and `onExpired`.
+
 ### Customization
 
 You can pass `g-recaptcha` the following properties:
@@ -123,9 +138,12 @@ You can pass `g-recaptcha` the following properties:
 - `tabindex`
 - `badge`
 - `isolated`
+- `skip`*
 
 Their meaning is described on [this official doc](https://developers.google.com/recaptcha/docs/display#render_param).
 Also have a look at the dummy app's [example templates](https://github.com/algonauti/ember-g-recaptcha/tree/master/tests/dummy/app/templates).
+
+\* The `skip` option is not a official option.
 
 ### Invisible reCaptcha
 
