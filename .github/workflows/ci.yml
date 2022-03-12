@@ -33,7 +33,6 @@ jobs:
     strategy:
       matrix:
         node:
-          - "12"
           - "14"
           - "16"
 
@@ -82,5 +81,5 @@ jobs:
       - name: install dependencies
         run: yarn install --frozen-lockfile --non-interactive
 
-      - name: test
+      - name: Test ember:try scenario ${{ matrix.ember-try-scenario }}
         run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
