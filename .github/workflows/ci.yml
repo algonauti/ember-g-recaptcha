@@ -26,22 +26,61 @@ jobs:
       - name: Run lint
         run: yarn lint
 
-  qunit:
-    name: QUnit
+  tests:
+    name: Tests
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    strategy:
+      matrix:
+        node:
+          - "12"
+          - "14"
+          - "16"
+
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version: ${{ matrix.node }}
       - uses: actions/cache@v2
         id: yarn-cache
         with:
           path: '**/node_modules'
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
 
-      - run: yarn install --frozen-lockfile --non-interactive
+      - name: install dependencies
+        run: yarn install --frozen-lockfile --non-interactive
 
-      - name: Run unit tests
-        run: yarn test
+      - name: "Test with node: ${{ matrix.node }}"
+        run: yarn test:ember
+
+  try-scenarios:
+    name: "Compatibility"
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    needs: tests
+    strategy:
+      fail-fast: true
+      matrix:
+        ember-try-scenario:
+          - ember-lts-3.24
+          - ember-lts-3.28
+          - ember-release
+          - ember-beta
+          - ember-canary
+          - ember-default-with-jquery
+          - ember-classic
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      - name: install dependencies
+        run: yarn install --frozen-lockfile --non-interactive
+
+      - name: test
+        run: node_modules/.bin/ember try:one ${{ matrix.ember-try-scenario }} --skip-cleanup
