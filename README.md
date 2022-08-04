@@ -23,7 +23,7 @@ var ENV = {
 };
 
 ENV['ember-g-recaptcha'] = {
-  jsUrl: 'https://www.google.com/recaptcha/api.js?render=explicit', // default
+  jsUrl: 'https://www.google.com/recaptcha/api.js', // default
   sitekey: 'your-recaptcha-site-key',
   hl: 'tr', // Ex: Turkish
 };
@@ -178,7 +178,7 @@ var ENV = {
 };
 
 ENV['ember-g-recaptcha'] = {
-  jsUrl: 'https://www.google.com/recaptcha/api.js?render=explicit', // default
+  jsUrl: 'https://www.google.com/recaptcha/api.js', // default
   sitekey: 'your-recaptcha-site-key',
 };
 ```
