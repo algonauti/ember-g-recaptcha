@@ -61,8 +61,10 @@ export default class GRecaptchaComponent extends Component {
     };
 
     let baseUrl = [
-      `${this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'}?render=explicit`,
-      `onload=${globalName}`
+      `${
+        this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'
+      }?render=explicit`,
+      `onload=${globalName}`,
     ];
 
     if (this.config['hl']) {
