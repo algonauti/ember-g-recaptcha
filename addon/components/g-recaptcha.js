@@ -54,22 +54,23 @@ export default class GRecaptchaComponent extends Component {
 
   @action
   _initialize(element) {
-    window[`__ember_g_recaptcha_${this.elementId}_onload`] = () => {
+    const globalName = `__ember_g_recaptcha_${this.elementId}_onload`;
+
+    window[globalName] = () => {
       this._render(element);
     };
 
-    const baseUrl = [
-      `${
-        this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'
-      }?render=explicit`,
-      `onload=__ember_g_recaptcha_${this.elementId}_onload`,
-      this.config['hl'] ? `hl=${this.config['hl']}` : '',
-    ].join('&');
+    let baseUrl = [
+      `${this.config['jsUrl'] || 'https://www.google.com/recaptcha/api.js'}?render=explicit`,
+      `onload=${globalName}`
+    ];
+
+    if (this.config['hl']) {
+      baseUrl.push(`hl=${this.config['hl']}`);
+    }
 
     if (!this.options['skip']) {
-      this._appendScript(
-        `${baseUrl}&onload=__ember_g_recaptcha_${this.elementId}_onload`
-      );
+      this._appendScript(baseUrl.join('&'));
     } else {
       this._render();
     }
